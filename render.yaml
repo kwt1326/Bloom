@@ -4,7 +4,7 @@ services:
     runtime: static
     rootDir: .
     branch: main
-    buildCommand: npm install && npm run build
+    buildCommand: pnpm install --no-frozen-lockfile && pnpm run build
     staticPublishPath: dist
     buildFilter:
       ignoredPaths:
