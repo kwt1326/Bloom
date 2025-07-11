@@ -50,10 +50,10 @@ export default function MainScene() {
 
   const getPlantSrc = (day: number) => {
     if (day <= 2) return plant1
-    if (day <= 4) return plant2   // Days 2–3: Sprout
-    if (day <= 6) return plant3   // Days 4–5: Bud
-    if (day === 7) return plant4   // Day 6: Early bloom
-    return plant5                  // Day 7+: Full bloom
+    if (day <= 4) return plant2  
+    if (day <= 6) return plant3  
+    if (day === 7) return plant4 
+    return plant5                
   }
 
   const pots = [pot, pot2, pota]
