@@ -13,24 +13,24 @@ const QuizDialog = ({
 
   return (
     <>
-      {/* 1) 뒷배경 오버레이: fixed로 전체 화면, 반투명 회색, 클릭 차단 */}
-      <div
-        className="fixed inset-0 bg-gray-800/50 z-20"
-        // 만약 클릭 시 모달을 닫고 싶으시면 아래 주석 해제
-        // onClick={() => handleQuizComplete(0)}
-      />
+      {/* 뒤 배경 오버레이 */}
+      <div className="fixed inset-0 bg-gray-800/50 z-20" />
 
-      {/* 2) 실제 모달 컨텐츠 */}
+      {/* 모달: 모바일 풀 너비, 최대 320px, 화면 아래 20px 위 */}
       <div
         className="
           fixed
-          w-[70%]
-          bottom-[30%]
-          left-[50%]
+          w-full           /* 좁은 화면에선 100% */
+          max-w-xs         /* 최대 너비 20rem (320px) */
+          left-1/2
+          bottom-5         /* 1.25rem = 20px */
           transform -translate-x-1/2
           z-30
           animate-slide-up
         "
+        style={{
+          top: "35%"
+        }}
       >
         <img
           src={quizBg}
@@ -38,30 +38,25 @@ const QuizDialog = ({
           className="w-full relative z-30"
         />
 
-        {/* 정답 버튼 */}
-        <div
-          onClick={() => handleQuizComplete(10)}
-          className="
-            absolute
-            left-[12%]
-            bottom-[12%]
-            w-20 h-12
-            z-40
-          "
-        />
+        <div className="flex w-full z-50" style={{
+          position: "fixed",
+          top: 190,
+          width: "100%",
+          justifyContent: "space-between"
+        }}>
+          <div onClick={() => handleQuizComplete(0)} style={{
+            height: 60,
+            width: 150
 
-        {/* 오답 버튼 */}
-        <div
-          onClick={() => handleQuizComplete(0)}
-          className="
-            absolute
-            right-[12%]
-            bottom-[12%]
-            w-20 h-12
-            z-40
-          "
-        />
-      </div>
+          }}></div>
+          <div onClick={() => handleQuizComplete(5)} style={{
+            width: 150,
+            padding: "0 20px",
+            height: 60
+          }}></div>
+
+        </div>
+          </div>
     </>
   )
 }

@@ -3,9 +3,12 @@ import FullScreenImage from "@/components/FullSizeImage";
 import { useVh } from "@/hooks/useVh";
 
 // 이미지 임포트 (프로젝트 경로에 맞게 조정)
-// import seedRegular from '/assets/seed-regular.png'
-// import seedSpecial from '/assets/seed-special.png'
-// import donateBtn from '/assets/btn-donate.png'
+import seed1 from '/assets/seed_1.png'
+import seed1bg from '/assets/seed_1_bg.png'
+import seed2 from '/assets/seed_2.png'
+import seed2bg from '/assets/seed_2_bg.png'
+import seedRegText from '/assets/seed_reg_text.png'
+import seedSpeText from '/assets/seed_spe_text.png'
 
 export default function SelectSeedScene() {
   useVh()
@@ -21,49 +24,46 @@ export default function SelectSeedScene() {
       }}
     >
       {/* 배경 이미지 */}
-      <FullScreenImage src="assets/seed.png" alt="Seed Selection" />
+      <FullScreenImage src="assets/seed_front.png" alt="Seed Selection" />
 
       {/* 첫 번째 Seed 클릭 영역 */}
       <Link
         to="/main"
         style={{
           position: 'absolute',
-          top: '55%',
-          left: '20%',
+          top: '58%',
+          left: '25%',
           width: '30%',
           height: '20%',       // 컨테이너 높이에 비례
           transform: 'translate(-50%, -50%)',
           zIndex: 10,
         }}
-      />
+      >
+        <img className="absolute" src={seed1} alt="seed1" />
+        <img className="" src={seed1bg} alt="seed1bg" />
+        <img className="pt-4" src={seedRegText} alt="seed1bg" />
+      </Link>
 
       {/* 두 번째 Seed 클릭 영역 */}
       <Link
-        to="/main"
+        to="https://onetreeplanted.org/pages/donate-crypto?srsltid=AfmBOor6shc51nr-UZpgg1lQ2hgq17WLywixyy0d_M5w7fcoZHdiiHm7"
         style={{
           position: 'absolute',
-          top: '55%',
-          left: '80%',
+          top: '58%',
+          left: '75%',
           width: '30%',
           height: '20%',       // 컨테이너 높이에 비례
           transform: 'translate(-50%, -50%)',
           zIndex: 10,
         }}
-      />
-
-      {/* Donate 클릭 영역 */}
-      <Link
-        to="/donate"
-        style={{
-          position: 'absolute',
-          top: '65%',
-          left: '50%',
-          width: '50%',
-          height: '8%',        // 컨테이너 높이에 비례
-          transform: 'translate(-50%, -50%)',
-          zIndex: 10,
-        }}
-      />
+      >
+        <img className="
+              absolute
+              
+        " src={seed2} alt="seed2" />
+        <img className="" src={seed2bg} alt="seed2bg" />
+        <img className="pt-4" src={seedSpeText} alt="seed1bg" />
+      </Link>
     </div>
   )
 }
