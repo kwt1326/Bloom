@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: bloom
+    runtime: static
+    rootDir: src
+    branch: main
+    buildCommand: pnpm install --frozen-lockfile && pnpm run build
+    staticPublishPath: ./dist
+    buildFilter:
+      ignoredPaths:
+        - src/**/*.test.js
+        
