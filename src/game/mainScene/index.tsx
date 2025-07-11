@@ -28,8 +28,8 @@ import watering from '/assets/water_1.png'
 import sunnying from '/assets/sun_1.png'
 import sunnyingLight from '/assets/light.png'
 import winding from '/assets/wind_1.png'
-// import gmSun from '/assets/gm_sun.png'
-// import gmAir from '/assets/gm_air.png'
+import gmSun from '/assets/gm_sun.png'
+import gmAir from '/assets/gm_air.png'
 import gmW from '/assets/gm_w.png'
 
 import FullScreenImage from '@/components/FullSizeImage'
@@ -57,6 +57,7 @@ export default function MainScene() {
   }
 
   const pots = [pot, pot2, pota]
+  const messages = [gmSun, gmAir, gmW]
 
   const getDaySrc = (day: number) => {
     return [d6, d5, d4, d3, d2, d1, db].find((_, i) => i + 1 === day)
@@ -98,9 +99,17 @@ export default function MainScene() {
       if (type !== 'fail') {
         setCurrentDay((d) => Math.min(7, d + 1))
       }
-      setTimeout(() => setShowMessage(false), 2000) // 2초 후 원복
+      setTimeout(() => setShowMessage(false), 1000)
     }, 2000) // 2초 후 원복
   }
+
+  const getRandomElement = (arr: Array<string>) => {
+  if (!Array.isArray(arr) || arr.length === 0) {
+    return undefined;
+  }
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
 
   return (
     <div
@@ -272,7 +281,7 @@ export default function MainScene() {
 
       {showMessage && (
         <img
-          src={gmW}
+          src={getRandomElement(messages)}
           alt="message"
           className="absolute top-[75%] left-1/4 w-[80%] max-w-[180px] z-20 opacity-100 transition-opacity duration-500"
         />
