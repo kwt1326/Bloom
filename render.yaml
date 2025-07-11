@@ -2,10 +2,10 @@ services:
   - type: web
     name: bloom
     runtime: static
-    rootDir: src
+    rootDir: .
     branch: main
     buildCommand: pnpm install --no-frozen-lockfile && pnpm run build && ls -R .
-    staticPublishPath: ./dist
+    staticPublishPath: dist
     buildFilter:
       ignoredPaths:
         - src/**/*.test.js
