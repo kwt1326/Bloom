@@ -15,6 +15,7 @@ import plant3 from '/assets/plants_3.png'
 import plant4 from '/assets/plants_4.png'
 import plant5 from '/assets/plants_5.png'
 import pot from '/assets/pot_1.png'
+import pot2 from '/assets/pot_2.png'
 import potShadow from '/assets/pot_shadow.png'
 import sunIcon from '/assets/sun_off.png'
 import waterIcon from '/assets/wat_off.png'
@@ -25,6 +26,9 @@ import trophyIcon from '/assets/ranking.png'
 import watering from '/assets/water_1.png'
 import sunnying from '/assets/sun_1.png'
 import winding from '/assets/wind_1.png'
+// import gmSun from '/assets/gm_sun.png'
+// import gmAir from '/assets/gm_air.png'
+import gmW from '/assets/gm_w.png'
 
 import FullScreenImage from '@/components/FullSizeImage'
 import QuizDialog from './QuizDialog'
@@ -36,10 +40,11 @@ export default function MainScene() {
 
   const [action, setAction] = useState<null | 'sun' | 'water' | 'wind'>(null)
   const [currentDay, setCurrentDay] = useState(1)
+  const [currentPot, setCurrentPot] = useState(0)
   const [showQuiz, setShowQuiz] = useState(false)
+  const [showMessage, setShowMessage] = useState(false)
   const [score, setScore] = useState(0)
 
-  // 2. Day 구간별 이미지 매핑 함수
   const getPlantSrc = (day: number) => {
     if (day === 1) return plant1
     if (day <= 3) return plant2   // Days 2–3: Sprout
@@ -47,6 +52,8 @@ export default function MainScene() {
     if (day === 6) return plant4   // Day 6: Early bloom
     return plant5                  // Day 7+: Full bloom
   }
+
+  const pots = [pot, pot2]
 
   const getDaySrc = (day: number) => {
     return [d1, d2, d3, d4, d5, d6, d7].find((_, i) => i + 1 === day)
@@ -73,23 +80,26 @@ export default function MainScene() {
 
   const handleAction = (type: 'sun' | 'water' | 'wind') => {
     setAction(type)
-    setTimeout(() => setAction(null), 2000) // 2초 후 원복
+    setCurrentPot(1)
+    setTimeout(() => {
+      setAction(null)
+      setShowMessage(true)
+      setCurrentPot(0)
+      setTimeout(() => setShowMessage(false), 2000) // 2초 후 원복
+    }, 2000) // 2초 후 원복
   }
 
   return (
     <div
       style={{
-        position: 'relative',
-        width: '375px',       // 기준 너비
-        maxWidth: '100%',     // 화면에 맞춰 축소
-        aspectRatio: '375 / 674',
-        margin: '0 auto',     // 가운데 정렬
+        position: "relative",
+        width: "375px", // 기준 너비
+        maxWidth: "100%", // 화면에 맞춰 축소
+        aspectRatio: "375 / 674",
+        margin: "0 auto", // 가운데 정렬
       }}
     >
-      <FullScreenImage
-        src={bg}
-        alt="Bloom Background"
-      />
+      <FullScreenImage src={bg} alt="Bloom Background" />
 
       {/* 상단 로고 */}
       <img
@@ -106,46 +116,86 @@ export default function MainScene() {
       />
 
       {/* 상단 중앙 아이콘들 */}
-      <div className="absolute top-[25%] left-1/2 transform -translate-x-1/2 flex space-x-6 z-10">
-        {action !== 'sun' && (
-          <button onClick={() => { plusScore(5); handleAction('sun') }}>
-            <img src={sunIcon} alt="Sun" className="w-[12%] max-w-[50px]" />
-          </button>
-        )}
-        {action !== 'water' && (
-          <button onClick={() => { plusScore(5); handleAction('water') }}>
-            <img src={waterIcon} alt="Water" className="w-[12%] max-w-[50px]" />
-          </button>
-        )}
-        {action !== 'wind' && (
-          <button onClick={() => setShowQuiz(!showQuiz)}>
-            <img src={windIcon} alt="Wind" className="w-[12%] max-w-[50px]" />
-          </button>
-        )}
-      </div>
+      {action == null && (
+        <div>
+          {action !== "sun" && (
+            <div
+              className="
+              absolute
+              top-[30%]
+              left-[25%]
+              transform -translate-x-1/2
+              flex
+              space-x-4
+            "
+              onClick={() => {
+                plusScore(5);
+                handleAction("sun");
+              }}
+            >
+              <img src={sunIcon} className="w-15 h-15" />
+            </div>
+          )}
+
+          {action !== "water" && (
+            <div
+              className="
+          absolute
+          top-[20%]
+          left-1/2
+          transform -translate-x-1/2
+          flex
+          space-x-4
+        "
+              onClick={() => {
+                plusScore(5);
+                handleAction("water");
+              }}
+            >
+              <img src={waterIcon} className="w-15 h-15" />
+            </div>
+          )}
+
+          {action !== "wind" && (
+            <div
+              className="
+          absolute
+          top-[30%]
+          left-[75%]
+          transform -translate-x-1/2
+          flex
+          space-x-4
+        "
+              onClick={() => setShowQuiz(!showQuiz)}
+            >
+              <img src={windIcon} className="w-15 h-15" />
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Elephaant Watering Image */}
-      {(action && action === 'water') && (
+      {action && action === "water" && (
         <img
           src={watering}
           alt="Watering"
-          className="absolute top-[45%] left-1/2 transform -translate-x-1/2 w-[35%] max-w-[180px] z-20 opacity-100 transition-opacity duration-500"
+          className="absolute top-[23%] right-[-10%] transform -translate-x-1/2 -rotate-30 w-[45%] max-w-[180px] z-20 opacity-100 transition-opacity duration-500"
         />
       )}
 
-      {(action && action === 'sun') && (
+      {action && action === "sun" && (
         <img
           src={sunnying}
           alt="Sunny"
-          className="absolute top-[45%] left-1/2 transform -translate-x-1/2 w-[35%] max-w-[180px] z-20 opacity-100 transition-opacity duration-500"
+          className="absolute top-[20%] left-[20%] transform -translate-x-1/2 w-[23%] max-w-[180px] z-20 opacity-100 transition-opacity duration-500"
         />
       )}
 
-      {(action && action === 'wind') && (
+      {action && action === "wind" && (
         <img
           src={winding}
           alt="winding"
-          className="absolute top-[45%] left-1/2 transform -translate-x-1/2 w-[35%] max-w-[180px] z-20 opacity-100 transition-opacity duration-500"
+          className="absolute top-[35%] left-1/3 w-[35%] max-w-[180px] z-20 opacity-100 transition-opacity duration-500"
         />
       )}
 
@@ -153,21 +203,21 @@ export default function MainScene() {
       <img
         src={plantSrc}
         alt={`Day ${currentDay} Plant`}
-        className="absolute top-[40%] left-1/2 transform -translate-x-1/2 w-[30%] max-w-[160px]"
+        className="absolute top-[40%] left-1/2 transform -translate-x-1/2 w-[35%] max-w-[160px]"
       />
       <img
-        src={pot}
+        src={pots[currentPot]}
         alt="Pot"
-        className="absolute top-[60%] left-1/2 transform -translate-x-1/2 w-[25%] max-w-[140px] z-10"
+        className="absolute top-[63%] left-1/2 transform -translate-x-1/2 w-[35%] max-w-[140px] z-10"
       />
       <img
         src={potShadow}
         alt="Pot Shadow"
-        className="absolute top-[72%] left-1/2 transform -translate-x-1/2 w-[25%] max-w-[140px]"
+        className="absolute top-[75%] left-1/2 transform -translate-x-1/2 w-[35%] max-w-[140px]"
       />
 
       {/* 프로그레스 바 */}
-      <div className="absolute top-[85%] left-1/2 transform -translate-x-1/2 w-[60%] max-w-[300px]">
+      <div className="absolute top-[80%] left-1/2 transform -translate-x-1/2 w-[60%] max-w-[300px]">
         <div className="bg-white/50 rounded-full h-2 w-full overflow-hidden">
           <div
             className="h-full rounded-full bg-green-500 transition-all duration-300"
@@ -176,31 +226,54 @@ export default function MainScene() {
         </div>
       </div>
 
+      {showMessage && (
+        <img
+          src={gmW}
+          alt="message"
+          className="absolute top-[75%] left-1/4 w-[80%] max-w-[180px] z-20 opacity-100 transition-opacity duration-500"
+        />
+      )}
+
       {/* ———— 데모용: Day 변경 버튼 ———— */}
-      <div className="absolute top-10 flex space-x-2">
-        <button
-          onClick={() => setCurrentDay(d => Math.max(1, d - 1))}
-          className="px-3 py-1 text-amber-900 rounded bg-amber-500"
+      <div className="absolute top-15 flex space-x-2 left-[22%]">
+        <div
+          onClick={() => setCurrentDay((d) => Math.max(1, d - 1))}
+          className="px-3 py-1 text-black font-bold rounded bg-blue-50"
         >
-          Prev Day
-        </button>
-        <button
-          onClick={() => setCurrentDay(d => Math.min(7, d + 1))}
-          className="px-3 py-1 text-amber-900 bg-amber-500 rounded"
+          Yesterday
+        </div>
+        <div
+          onClick={() => setCurrentDay((d) => Math.min(7, d + 1))}
+          className="px-3 py-1 text-black font-bold bg-blue-50 rounded"
         >
-          Next Day
-        </button>
+          Tomorrow
+        </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-6">
+      <div
+        className="
+          absolute
+          bottom-6
+          left-1/2
+          transform -translate-x-1/2
+          flex
+          space-x-6
+        "
+      >
         {[shopIcon, journalIcon, trophyIcon].map((src, i) => (
-          <button key={i} className="w-[12%] max-w-[60px] h-[12%] max-h-[60px] rounded-lg p-0 bg-transparent">
-            <img src={src} className="w-full h-full object-contain" />
-          </button>
+          <div
+            key={i}
+            className="w-16 h-16 rounded-lg !p-0 !bg-transparent !bg-none"
+          >
+            <img src={src} className="w-16 h-16 !bg-none" />
+          </div>
         ))}
       </div>
 
-      <QuizDialog handleQuizComplete={handleQuizComplete} setShowQuiz={setShowQuiz} showQuiz={showQuiz} />
+      <QuizDialog
+        handleQuizComplete={handleQuizComplete}
+        showQuiz={showQuiz}
+      />
     </div>
-  )
+  );
 }
